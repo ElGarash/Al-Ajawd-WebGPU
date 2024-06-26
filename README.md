@@ -21,7 +21,22 @@ https://github.com/xenova/whisper-web/assets/26504141/5d6ed3d9-5f99-4d89-8e38-9d
     ```bash
     npm run dev
     ```
+
     > Firefox users need to change the `dom.workers.modules.enabled` setting in `about:config` to `true` to enable Web Workers.
     > Check out [this issue](https://github.com/xenova/whisper-web/issues/8) for more details.
 
 3. Open the link (e.g., [http://localhost:5173/](http://localhost:5173/)) in your browser.
+
+## Pushing to Hugging Face Spaces
+
+1. build the project
+    ```bash
+    npm run hf_build
+    ```
+2. push the project to Hugging Face Spaces
+
+    ```bash
+    cd dist
+    git commit # if you have made any changes
+    git push # (you need to configure the ssh keys before pushing to the repo)
+    ```
