@@ -125,13 +125,13 @@ const LANGUAGES = {
 
 const MODELS = Object.entries({
     // Original checkpoints
-    'onnx-community/whisper-tiny': 120, // 33 + 87
-    'onnx-community/whisper-base': 206, // 83 + 123
-    'onnx-community/whisper-small': 586, // 353 + 233
-    'omartariq612/whisper_onnx_small_test' : 1127, // 774 + 353
+    // 'onnx-community/whisper-tiny': 120, // 33 + 87
+    // 'onnx-community/whisper-base': 206, // 83 + 123
+    // 'onnx-community/whisper-small': 586, // 353 + 233
+    "omartariq612/whisper_onnx_small_test": 1127, // 774 + 353
 
     // Distil Whisper (English-only)
-    'onnx-community/distil-small.en': 538, // 353 + 185
+    // 'onnx-community/distil-small.en': 538, // 353 + 185
 });
 
 export enum AudioSource {
@@ -141,14 +141,15 @@ export enum AudioSource {
 }
 
 export function AudioManager(props: { transcriber: Transcriber }) {
+    props.transcriber.setLanguage("ar");
     const [progress, setProgress] = useState<number | undefined>(0);
     const [audioData, setAudioData] = useState<
         | {
-            buffer: AudioBuffer;
-            url: string;
-            source: AudioSource;
-            mimeType: string;
-        }
+              buffer: AudioBuffer;
+              url: string;
+              source: AudioSource;
+              mimeType: string;
+          }
         | undefined
     >(undefined);
     const [audioDownloadUrl, setAudioDownloadUrl] = useState<
@@ -286,7 +287,9 @@ export function AudioManager(props: { transcriber: Transcriber }) {
                     )}
                 </div>
                 <AudioDataBar
-                    progress={progress !== undefined && audioData ? 1 : progress ?? 0}
+                    progress={
+                        progress !== undefined && audioData ? 1 : progress ?? 0
+                    }
                 />
             </div>
 
@@ -373,17 +376,18 @@ function SettingsModal(props: {
 }) {
     const names = Object.values(LANGUAGES).map(titleCase);
 
-    const models = MODELS
-        .filter(
-            ([key, value]) => (
-                !props.transcriber.multilingual || !key.includes('/distil-')
-            )
-        )
-        .map(([key, value]) => ({
-            key,
-            size: value,
-            id: `${key}${(props.transcriber.multilingual || key.includes('/distil-')) ? "" : ".en"}`,
-        }));
+    const models = MODELS.filter(
+        ([key, value]) =>
+            !props.transcriber.multilingual || !key.includes("/distil-"),
+    ).map(([key, value]) => ({
+        key,
+        size: value,
+        id: `${key}${
+            props.transcriber.multilingual || key.includes("/distil-")
+                ? ""
+                : ".en"
+        }`,
+    }));
     return (
         <Modal
             show={props.show}
@@ -399,12 +403,15 @@ function SettingsModal(props: {
                         }}
                     >
                         {models.map(({ key, id, size }) => (
-                            <option key={key} value={id}>{`${id} (${size}MB)`}</option>
+                            <option
+                                key={key}
+                                value={id}
+                            >{`${id} (${size}MB)`}</option>
                         ))}
                     </select>
-                    <div className='flex justify-end items-center mb-3 px-1'>
+                    {/* <div className='flex justify-end items-center mb-3 px-1'>
                         <div className='flex'>
-                            <input
+                             <input
                                 id='multilingual'
                                 type='checkbox'
                                 checked={props.transcriber.multilingual}
@@ -421,8 +428,8 @@ function SettingsModal(props: {
                                 Multilingual
                             </label>
                         </div>
-                    </div>
-                    {props.transcriber.multilingual && (
+                    </div> */}
+                    {/* {props.transcriber.multilingual && (
                         <>
                             <label>Select the source language.</label>
                             <select
@@ -456,11 +463,11 @@ function SettingsModal(props: {
                                 </option>
                             </select>
                         </>
-                    )}
+                    )} */}
                 </>
             }
             onClose={props.onClose}
-            onSubmit={() => { }}
+            onSubmit={() => {}}
         />
     );
 }
@@ -553,7 +560,6 @@ function FileTile(props: {
         mimeType: string,
     ) => void;
 }) {
-
     // Create hidden input element
     const elem = document.createElement("input");
     elem.type = "file";
@@ -616,17 +622,17 @@ function RecordTile(props: {
         }
     };
 
-    return (<>
-        <Tile icon={props.icon} text={props.text} onClick={onClick} />
-        <RecordModal
-            show={showModal}
-            onSubmit={onSubmit}
-            onProgress={(data) => {
-
-            }}
-            onClose={onClose}
-        />
-    </>);
+    return (
+        <>
+            <Tile icon={props.icon} text={props.text} onClick={onClick} />
+            <RecordModal
+                show={showModal}
+                onSubmit={onSubmit}
+                onProgress={(data) => {}}
+                onClose={onClose}
+            />
+        </>
+    );
 }
 
 function RecordModal(props: {
