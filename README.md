@@ -31,7 +31,7 @@ https://github.com/xenova/whisper-web/assets/26504141/5d6ed3d9-5f99-4d89-8e38-9d
 
 1. build the project
     ```bash
-    npm run hf_build
+    npm run hf-build
     ```
 2. push the project to Hugging Face Spaces
 
